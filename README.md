@@ -51,7 +51,23 @@ docker compose up -d --build
 
 El contenedor se inicia, ajusta permisos de directorios y queda ejecutándose.
 
-**3. Próximos pasos (en desarrollo)**
+**3. Verificá el estado:**
+   ```bash
+   docker compose ps
+   ```
+
+**4. Deberías ver el servici opn-lic-srv ejecutándose:**
+   ```bash
+NAME                  IMAGE                           COMMAND                  SERVICE       CREATED          STATUS          PORTS
+open-license-server   open-license-server:0.11.2025   "/usr/local/bin/entr…"   opn-lic-srv   16 seconds ago   Up 10 seconds   ```
+  ```
+
+**5. Ingresar al contenedor:**
+   ```bash
+   $ docker compose exec -it opn-lic-srv bash
+   root@b488c2a55d3c:/ca# 
+   ```
+**6. Próximos pasos (en desarrollo)**
 
 Los scripts para:
 
@@ -64,9 +80,15 @@ Los scripts para:
 
 ---
 
+## 📂 Espacio de trabajo
+
+El directorio ```/ca``` es el workspace principal: ahí se pueden crear scripts, probar comandos y ejecutar aplicaciones Python que interactúen con open-license-server.
+
+---
+
 ## 💾 Backups
 
-El directorio ```/bup/``` está destinado a almacenar backups de la base de datos.
+El directorio ```/bup``` está destinado a almacenar backups de la base de datos.
 El mecanismo de backup y restore se implementará junto con los scripts Python.
 
 ---
