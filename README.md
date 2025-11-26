@@ -37,7 +37,13 @@ open-license-server/
 
 ## 🐳 Uso
 
-**1. Construir y levantar el servicio**
+**1. Clonar el repositorio:**
+   ```bash
+   git clone https://github.com/gpachello/open-license-server.git
+   cd open-license-server
+   ```
+
+**2. Construir y levantar el servicio**
 
 ```bash
 docker compose up -d --build
@@ -45,7 +51,7 @@ docker compose up -d --build
 
 El contenedor se inicia, ajusta permisos de directorios y queda ejecutándose.
 
-**2. Próximos pasos (en desarrollo)**
+**3. Próximos pasos (en desarrollo)**
 
 Los scripts para:
 
