@@ -1,0 +1,16 @@
+services:
+  opn-lic-srv:
+    build: .
+    container_name: open-license-server
+    image: open-license-server:0.11.2025
+
+    volumes:
+      - /etc/localtime:/etc/localtime:ro    # Sync Time
+      - /etc/timezone:/etc/timezone:ro      # Sync TimeZone
+
+      # Directorios locales montados en el contenedor
+      - ./ca/:/ca/
+      - ./scp/:/scp/
+      - ./bup/:/bup/
+
+    restart: "no"
