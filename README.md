@@ -64,7 +64,7 @@ open-license-server   open-license-server:0.11.2025   "/usr/local/bin/entr…"  
 
 **5. Ingresar al contenedor:**
    ```bash
-   $ docker compose exec -it opn-lic-srv bash
+   $ $ docker compose exec -u ca -it opn-lic-srv bash
    root@b488c2a55d3c:/ca# 
    ```
 **6. Próximos pasos (en desarrollo)**
