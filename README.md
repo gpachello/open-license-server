@@ -1,2 +1,78 @@
 # open-license-server
-Servidor de licencias para uso personal, basado en una CA Root y archivos firmados. Incluye herramientas para emitir certificados, gestionar licencias y mantener registros en una base de datos ligera.
+Servidor de licencias de uso personal basado en tecnologías **Open Source**.  
+Incluye la infraestructura necesaria para mantener una **CA Root**, manejar certificados y preparar un sistema de licencias firmado digitalmente.
+
+Este proyecto está pensado para ser **portable, sencillo y fácil de extender**.
+
+---
+
+## 🚀 Objetivos del proyecto
+
+* Construir una **CA Root** local dentro de un entorno reproducible.
+* Mantener un sistema de directorio para certificados, claves privadas y CRLs.
+* Preparar el entorno para gestionar clientes, certificados y licencias mediante scripts **Python + SQLite**.
+* Proveer un contenedor Docker minimalista, rápido de iniciar y fácil de respaldar.
+* Permitir auditoría sencilla de la base mediante **backups regulares**.
+
+---
+
+## 📂 Estructura del proyecto
+
+```bash
+open-license-server/
+  ├── Dockerfile
+  ├── docker-compose.yml
+  ├── entrypoint.sh
+  ├── ca/
+  │   ├── certs/
+  │   ├── private/
+  │   ├── crl/
+  │   └── openssl.cnf
+  ├── scp/
+  ├── bup/
+  └── db/                     (creado dentro del contenedor)
+```
+
+---
+
+## 🐳 Uso
+
+**1. Construir y levantar el servicio**
+
+```bash
+docker compose up -d --build
+```
+
+El contenedor se inicia, ajusta permisos de directorios y queda ejecutándose.
+
+**2. Próximos pasos (en desarrollo)**
+
+Los scripts para:
+
+* inicializar la base SQLite
+* gestionar clientes
+* emitir certificados
+* generar licencias firmadas
+
+... se agregarán próximamente.
+
+---
+
+## 💾 Backups
+
+El directorio ```/bup/``` está destinado a almacenar backups de la base de datos.
+El mecanismo de backup y restore se implementará junto con los scripts Python.
+
+---
+
+## 📌 Estado del proyecto
+
+Proyecto en construcción.
+Actualmente incluye:
+
+* Infraestructura base (```Docker``` + ```debian:trixie-slim```)
+* Estructura de CA Root (certs, private, crl, configuración)
+* Sistema de directorios preparado para scripts
+* Entrypoint funcional con manejo automático de permisos
+* Integración lista para agregar SQLite + scripts Python
+
