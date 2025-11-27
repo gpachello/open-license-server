@@ -9,7 +9,7 @@ services:
       - /etc/timezone:/etc/timezone:ro      # Sync TimeZone
 
       # Directorios locales montados en el contenedor
-      - ./ca/:/ca/
+      - ./lic/:/lic/
       - ./scp/:/scp/
       - ./bup/:/bup/
 
