@@ -8,7 +8,8 @@ RUN apt-get update -y && \
         sqlite3-tools \
     && rm -rf /var/lib/apt/lists/*
 
-RUN groupadd -r lic && useradd -r -g lic -d /lic -s /bin/bash lic
+RUN groupadd -r -g 65432 lic && \
+    useradd -r -K UID_MAX=65535 -u 65432 -g 65432 -d /lic -s /bin/bash lic
 
 # Crear directorios y cambiar propietario
 RUN mkdir -p /lic /bup /scp /db && \
