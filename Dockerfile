@@ -11,8 +11,8 @@ RUN apt-get update -y && \
 RUN groupadd -r lic && useradd -r -g lic -d /lic -s /bin/bash lic
 
 # Crear directorios y cambiar propietario
-RUN mkdir -p /bup /scp /db && \
-    chown -R lic:lic /bup /scp /db
+RUN mkdir -p /lic /bup /scp /db && \
+    chown -R lic:lic /lic /bup /scp /db
 
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
