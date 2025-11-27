@@ -8,11 +8,16 @@ RUN apt-get update -y && \
         sqlite3-tools \
     && rm -rf /var/lib/apt/lists/*
 
-RUN groupadd -r ca && useradd -r -g ca -d /ca -s /bin/sh ca
+RUN groupadd -r lic && useradd -r -g lic -d /lic -s /bin/bash lic
+
+# Crear directorios y cambiar propietario
+RUN mkdir -p /bup /scp /db && \
+    chown -R lic:lic /bup /scp /db
 
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
 
-ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
+USER lic
+WORKDIR /lic
 
-WORKDIR /ca
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
