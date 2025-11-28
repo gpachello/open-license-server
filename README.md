@@ -82,7 +82,7 @@ Los scripts para:
 
 ## 📂 Espacio de trabajo
 
-El directorio ```/lic``` es el workspace principal: ahí se guardan los certificados.
+El directorio ```/lic``` es el workspace principal: ahí se guardan los certificados.  
 El directorio ```/scp``` es para crear scripts, probar comandos y ejecutar aplicaciones Python que interactúen con open-license-server.
 
 ---
