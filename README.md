@@ -56,7 +56,7 @@ El contenedor se inicia, ajusta permisos de directorios y queda ejecutándose.
    docker compose ps
    ```
 
-**4. Deberías ver el servici opn-lic-srv ejecutándose:**
+**4. Deberías ver el servicio opn-lic-srv ejecutándose:**
    ```bash
 NAME                  IMAGE                           COMMAND                  SERVICE       CREATED          STATUS          PORTS
 open-license-server   open-license-server:0.11.2025   "/usr/local/bin/entr…"   opn-lic-srv   16 seconds ago   Up 10 seconds   ```
