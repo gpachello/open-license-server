@@ -39,8 +39,8 @@ open-license-server/
 
 **1. Clonar el repositorio:**
    ```bash
-   git clone https://github.com/gpachello/open-license-server.git
-   cd open-license-server
+git clone https://github.com/gpachello/open-license-server.git
+cd open-license-server
    ```
 
 **2. Construir y levantar el servicio**
@@ -53,7 +53,7 @@ El contenedor se inicia, ajusta permisos de directorios y queda ejecutándose.
 
 **3. Verificá el estado:**
    ```bash
-   docker compose ps
+docker compose ps
    ```
 
 **4. Deberías ver el servicio opn-lic-srv ejecutándose:**
@@ -64,8 +64,8 @@ open-license-server   open-license-server:0.11.2025   "/usr/local/bin/entr…"  
 
 **5. Ingresar al contenedor:**
    ```bash
-   $ docker compose exec -it opn-lic-srv bash
-   root@b488c2a55d3c:/lic# 
+$ docker compose exec -it opn-lic-srv bash
+root@b488c2a55d3c:/lic# 
    ```
 **6. Próximos pasos (en desarrollo)**
 
@@ -113,12 +113,12 @@ El usuario no necesita home ni shell interactivo.
 Ejemplo (con UID/GID 65432):
 
 ```bash
-   sudo groupadd -g 65432 lic
-   sudo useradd -u 65432 -g 65432 -M -s /sbin/nologin lic
+sudo groupadd -g 65432 lic
+sudo useradd -u 65432 -g 65432 -M -s /sbin/nologin lic
 ```
 Luego asignar los permisos correctos al proyecto:
 ```bash
-   sudo chown -R lic:lic open-license-server/
+sudo chown -R lic:lic open-license-server/
 ```
 📌 Este procedimiento es opcional, pero necesario si querés que los scripts dentro del contenedor puedan leer/escribir sin problemas en los directorios montados del host.
 
@@ -128,8 +128,8 @@ Luego asignar los permisos correctos al proyecto:
 
 El contenedor define el mismo UID/GID:
 ```bash
-   RUN groupadd -r -g 65432 lic && \
-       useradd -r -K UID_MAX=65535 -u 65432 -g 65432 -d /lic -s /bin/bash lic
+RUN groupadd -r -g 65432 lic && \
+    useradd -r -K UID_MAX=65535 -u 65432 -g 65432 -d /lic -s /bin/bash lic
 ```
 El uso de ```-K UID_MAX=65535``` permite crear un usuario con UID por encima del límite por defecto (60000 en Debian), algo necesario si se prefiere usar rangos altos para evitar conflictos.
 
