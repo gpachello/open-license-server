@@ -23,7 +23,7 @@ open-license-server/
   ├── Dockerfile
   ├── docker-compose.yml
   ├── entrypoint.sh
-  ├── ca/
+  ├── lic/
   │   ├── certs/
   │   ├── private/
   │   ├── crl/
@@ -64,8 +64,8 @@ open-license-server   open-license-server:0.11.2025   "/usr/local/bin/entr…"  
 
 **5. Ingresar al contenedor:**
    ```bash
-   $ $ docker compose exec -u ca -it opn-lic-srv bash
-   root@b488c2a55d3c:/ca# 
+   $ $ docker compose exec -it opn-lic-srv bash
+   root@b488c2a55d3c:/lic# 
    ```
 **6. Próximos pasos (en desarrollo)**
 
@@ -82,7 +82,8 @@ Los scripts para:
 
 ## 📂 Espacio de trabajo
 
-El directorio ```/ca``` es el workspace principal: ahí se pueden crear scripts, probar comandos y ejecutar aplicaciones Python que interactúen con open-license-server.
+El directorio ```/lic``` es el workspace principal: ahí se guardan los certificados.
+El directorio ```/scp``` es para crear scripts, probar comandos y ejecutar aplicaciones Python que interactúen con open-license-server.
 
 ---
 
