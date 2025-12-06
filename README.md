@@ -114,7 +114,7 @@ docker compose exec -it opn-lic-srv bash
 
 Actualmente incluye:  
 
-* **Infraestructura base:** Docker + Debian Trixie SLiM + Python
+* **Infraestructura base:** Docker + Debian Trixie Slim + Python
 * **Criptografía:** OpenSSL + `python3-cryptography`
 * **Frontend API:** FastAPI + Uvicorn
 * **Estructura prevista:** licencias, backups, scripts y base de datos
