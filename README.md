@@ -16,6 +16,38 @@ Este proyecto está pensado para ser **portable, sencillo y fácil de extender**
 
 ---
 
+>[!NOTE]
+> ## ⚠️ Prerequisito importante (antes del build)
+> Este proyecto usa un contenedor **rootless**, es decir: el servicio corre con un usuario interno (`lic`) que no es root y tiene un **UID/GID fijo 65432**.  
+>
+> Cuando se usan **bind mounts**, Docker mantiene los permisos del host.
+Por lo tanto:
+>
+> **👉 Si no existe en el host un usuario con el mismo UID/GID, el contenedor NO podrá escribir en los directorios montados.**
+> 
+> **✔️ Crear el usuario en el host**
+> ```bash
+> sudo groupadd -g 65432 lic
+> sudo useradd -u 65432 -g 65432 -M -s /sbin/nologin lic
+> ```
+> Dar permisos al proyecto:
+> ```bash
+> sudo chown -R lic:lic open-license-server/
+> ```
+> 📌 Si usás solo volúmenes de Docker, esto no es necesario.  
+> 📌 Si usás bind mounts (como hace este proyecto), sí es necesario ANTES del build.
+>
+> ---
+>
+> **👤 Usuario dentro del contenedor**  
+> Dockerfile crea un usuario con el mismo UID/GID:
+> ```bash
+> RUN groupadd -r -g 65432 lic && \
+>     useradd -r -K UID_MAX=65535 -u 65432 -g 65432 -d /lic -s /bin/bash lic
+> ```
+
+---
+
 ## 📂 Estructura del proyecto
 
 ```bash
@@ -38,123 +70,53 @@ open-license-server/
 ## 🐳 Uso
 
 **1. Clonar el repositorio:**
-   ```bash
+```bash
 git clone https://github.com/gpachello/open-license-server.git
 cd open-license-server
-   ```
+```
 
-**2. Construir y levantar el servicio**
+**2. (Si no lo hiciste previamente) Crear el usuario del host y asignar permisos**  
+📌 Necesario antes del build si usás bind mounts.
 
+**3. Construir y levantar el servicio**  
 ```bash
 docker compose up -d --build
 ```
 
-El contenedor se inicia, ajusta permisos de directorios y queda ejecutándose.
-
-**3. Verificá el estado:**
-   ```bash
+**4. Verificar ejecución**
+```bash
 docker compose ps
-   ```
+```
 
-**4. Deberías ver el servicio opn-lic-srv ejecutándose:**
-   ```bash
-NAME                  IMAGE                           COMMAND                  SERVICE       CREATED          STATUS          PORTS
-open-license-server   open-license-server:0.11.2025   "/usr/local/bin/entr…"   opn-lic-srv   16 seconds ago   Up 10 seconds   ```
-  ```
+**Deberías ver el servicio opn-lic-srv ejecutándose**
+```bash
+NAME                  IMAGE                           COMMAND                  SERVICE       CREATED             STATUS             PORTS
+open-license-server   open-license-server:0.11.2025   "/usr/local/bin/entr…"   opn-lic-srv   About an hour ago   Up About an hour   0.0.0.0:8000->8000/tcp
+```
 
 **5. Ingresar al contenedor:**
-   ```bash
+```bash
 docker compose exec -it opn-lic-srv bash
-   ```
-
-**6. Próximos pasos (en desarrollo)**
-
-Los scripts para:
-
-* inicializar la base SQLite
-* gestionar clientes
-* emitir certificados
-* generar licencias firmadas
-
-... se agregarán próximamente.
+```
 
 ---
 
 ## 📂 Espacio de trabajo
 
-El directorio ```/lic``` es el workspace principal: ahí se guardan los certificados.  
-El directorio ```/scp``` es para crear scripts, probar comandos y ejecutar aplicaciones Python que interactúen con open-license-server.
+* `/lic` → CA Root (certificados, claves, CRLs)
+* `/scp` → scripts auxiliares y utilidades Python
+* `/bup` → backups de la base
+* `/db`  → se crea automáticamente
 
 ---
 
-## 💾 Backups
+## 📌 Estado del proyecto (en desarrollo)
 
-El directorio ```/bup``` está destinado a almacenar backups de la base de datos.
-El mecanismo de backup y restore se implementará junto con los scripts Python.
-
----
-
-> [!NOTE]
-> ## Permisos, bind mounts (UID/GID en host y contenedor)
-> 
-> Cuando se usan bind mounts (montar un directorio del host dentro del contenedor), Docker no cambia permisos ni propietarios: el contenedor ve exactamente el UID/GID del host.
-> 
-> Por este motivo, si dentro del contenedor se usa un usuario no-root (por ejemplo lic), es necesario que ese usuario tenga el mismo UID/GID en el host, o de lo contrario no podrá leer/escribir los directorios montados.
-> 
-> Esto no afecta a volúmenes de Docker, solo a bind mounts.
-
----
-
-## Crear un usuario compatible en el host
-
-Para evitar problemas de permisos, se recomienda crear un usuario en el host con el mismo UID/GID que el usuario interno del contenedor (lic).
-El usuario no necesita home ni shell interactivo.
-
-Ejemplo (con UID/GID 65432):
-
-```bash
-sudo groupadd -g 65432 lic
-sudo useradd -u 65432 -g 65432 -M -s /sbin/nologin lic
-```
-Luego asignar los permisos correctos al proyecto:
-```bash
-sudo chown -R lic:lic open-license-server/
-```
-📌 Este procedimiento es opcional, pero necesario si querés que los scripts dentro del contenedor puedan leer/escribir sin problemas en los directorios montados del host.
-
----
-
-## Crear el usuario dentro del contenedor (Dockerfile)
-
-El contenedor define el mismo UID/GID:
-```bash
-RUN groupadd -r -g 65432 lic && \
-    useradd -r -K UID_MAX=65535 -u 65432 -g 65432 -d /lic -s /bin/bash lic
-```
-El uso de ```-K UID_MAX=65535``` permite crear un usuario con UID por encima del límite por defecto (60000 en Debian), algo necesario si se prefiere usar rangos altos para evitar conflictos.
-
----
-
-## 📌 ¿Por qué usar UID/GID altos?
-
-Evita colisiones con usuarios reales del sistema (1000–60000).
-
-Se alinea con el uso común en sistemas de virtualización (ej.: libvirt-qemu usa UIDs > 64000).
-
-Facilita identificar usuarios creados “solo para permisos”.
-
-Rangos recomendados para este tipo de contenedores: **64000–65535**
-
----
-
-## 📌 Estado del proyecto
-
-Proyecto en construcción.
-Actualmente incluye:
+Actualmente incluye:  
 
 * **Infraestructura base:** Docker + Debian Trixie SLiM + Python
 * **Criptografía:** OpenSSL + `python3-cryptography`
 * **Frontend API:** FastAPI + Uvicorn
-* **Estructura prevista:** directorios para licencias, backups, scripts y base de datos
+* **Estructura prevista:** licencias, backups, scripts y base de datos
 * **Entrypoint funcional:** inicialización automática + permisos + verificación de entorno
 * **Persistencia:** integración prevista para SQLite y lógica de licenciamiento
