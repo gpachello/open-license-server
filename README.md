@@ -152,9 +152,9 @@ Rangos recomendados para este tipo de contenedores: **64000–65535**
 Proyecto en construcción.
 Actualmente incluye:
 
-* Infraestructura base (```Docker``` + ```debian:trixie-slim```)
-* Estructura de CA Root (certs, private, crl, configuración)
-* Sistema de directorios preparado para scripts
-* Entrypoint funcional con manejo automático de permisos
-* Integración lista para agregar SQLite + scripts Python
-
+* **Infraestructura base:** Docker + Debian Trixie SLiM + Python
+* **Criptografía:** OpenSSL + `python3-cryptography`
+* **Frontend API:** FastAPI + Uvicorn
+* **Estructura prevista:** directorios para licencias, backups, scripts y base de datos
+* **Entrypoint funcional:** inicialización automática + permisos + verificación de entorno
+* **Persistencia:** integración prevista para SQLite y lógica de licenciamiento
