@@ -4,6 +4,9 @@ RUN apt-get update -y && \
     apt-get install -y --no-install-recommends \
         openssl \
         python3 \
+	python3-fastapi \
+    	python3-uvicorn \
+    	python3-cryptography \
         sqlite3 \
         sqlite3-tools \
     && rm -rf /var/lib/apt/lists/*
